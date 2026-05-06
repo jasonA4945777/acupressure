@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>改善失眠穴位按摩引導</title>
+<style>
+  :root {
+    --purple: #7F77DD;
+    --purple-dark: #534AB7;
+    --purple-deep: #3C3489;
+    --purple-light: #EEEDFE;
+    --purple-mid: #AFA9EC;
+    --bg: #F8F7FF;
+    --card: #FFFFFF;
+    --text: #1a1a2e;
+    --text-sub: #5a5a7a;
+    --text-hint: #9090b0;
+    --border: rgba(127,119,221,0.18);
+    --border-mid: rgba(127,119,221,0.35);
+    --surface: #F0EFFE;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 22px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; background: var(--bg); font-family: -apple-system, 'PingFang TC', 'Noto Sans TC', sans-serif; }
+
+  body { display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+
+  .app {
+    width: 100%;
+    max-width: 420px;
+    min-height: 100vh;
+    background: var(--card);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* decorative top bar */
+  .top-deco {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #7F77DD, #AFA9EC, #534AB7);
+  }
+
+  .header {
+    padding: 1.25rem 1.25rem 0.75rem;
+    text-align: center;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--card);
+  }
+  .header-moon { font-size: 28px; margin-bottom: 4px; }
+  .header-title { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: .02em; }
+  .header-sub { font-size: 12px; color: var(--text-hint); margin-top: 3px; letter-spacing: .03em; }
+
+  .content { flex: 1; padding: 1rem 1.1rem 2rem; overflow-y: auto; }
+
+  /* intro */
+  .intro-section { margin-bottom: 1rem; }
+  .method-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--purple);
+  }
+  .method-title { font-size: 13px; font-weight: 600; color: var(--purple-deep); margin-bottom: 3px; }
+  .method-desc { font-size: 12.5px; color: var(--text-sub); line-height: 1.65; }
+
+  .points-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 1rem 0;
+  }
+  .preview-chip {
+    background: var(--surface);
+    border: 0.5px solid var(--border-mid);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .preview-chip-num { font-size: 10px; color: var(--purple); font-weight: 600; }
+  .preview-chip-name { font-size: 14px; font-weight: 600; color: var(--text); margin-top: 2px; }
+
+  .start-meta { text-align: center; font-size: 12px; color: var(--text-hint); margin: .75rem 0 1rem; }
+
+  /* progress */
+  .prog-wrap { padding: 0 0 .25rem; }
+  .prog-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .prog-label { font-size: 12px; color: var(--text-hint); }
+  .prog-step { font-size: 12px; font-weight: 600; color: var(--purple); }
+  .prog-bar { height: 5px; background: var(--surface); border-radius: 99px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--purple), var(--purple-dark)); transition: width .5s cubic-bezier(.4,0,.2,1); }
+
+  .dots { display: flex; justify-content: center; gap: 6px; margin: .6rem 0; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border-mid); transition: all .25s; }
+  .dot.on { background: var(--purple); width: 18px; border-radius: 99px; }
+
+  /* main card */
+  .pt-card {
+    background: var(--card);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 1.1rem 1.1rem 1rem;
+    margin-bottom: .75rem;
+    box-shadow: 0 2px 16px rgba(127,119,221,0.07);
+  }
+  .pt-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--purple-light); color: var(--purple-deep);
+    font-size: 11px; font-weight: 600; padding: 3px 10px;
+    border-radius: 99px; margin-bottom: 8px; letter-spacing: .04em;
+  }
+  .pt-name { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+
+  .sides-toggle { display: flex; gap: 6px; margin-bottom: 10px; }
+  .side-btn {
+    flex: 1; padding: 7px; font-size: 13px; font-weight: 500;
+    border-radius: var(--radius-md); border: 0.5px solid var(--border-mid);
+    background: var(--card); color: var(--text-sub); cursor: pointer;
+    transition: all .18s;
+  }
+  .side-btn.on { background: var(--purple-light); color: var(--purple-deep); border-color: var(--purple-mid); font-weight: 600; }
+
+  /* illustration */
+  .illus-box {
+    width: 100%; height: 170px;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 10px; overflow: hidden;
+  }
+  .illus-box svg { max-height: 160px; }
+
+  .pt-loc {
+    font-size: 13px; color: var(--text-sub); line-height: 1.65;
+    background: var(--surface); border-radius: var(--radius-md);
+    padding: 9px 12px; margin-bottom: 9px;
+  }
+  .tip-lbl { font-size: 11px; color: var(--purple); font-weight: 600; margin-bottom: 3px; letter-spacing: .04em; }
+  .tip-txt { font-size: 12.5px; color: var(--text-sub); line-height: 1.65; }
+
+  /* timer */
+  .timer-section { text-align: center; margin: .25rem 0 .6rem; }
+  .timer-ring { position: relative; display: inline-block; width: 110px; height: 110px; }
+  .t-svg { transform: rotate(-90deg); }
+  .t-bg { fill: none; stroke: var(--surface); stroke-width: 9; }
+  .t-arc { fill: none; stroke: var(--purple); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 276; transition: stroke-dashoffset 1s linear; }
+  .t-num { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -.01em; }
+  .t-stat { font-size: 12px; color: var(--text-hint); margin-top: 6px; min-height: 18px; }
+
+  /* buttons */
+  .btn-row { display: flex; gap: 8px; margin-top: .5rem; }
+  .btn {
+    flex: 1; padding: 11px 8px; border-radius: var(--radius-md);
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    border: 0.5px solid var(--border-mid); background: var(--card);
+    color: var(--text-sub); transition: all .15s; letter-spacing: .02em;
+  }
+  .btn:active { transform: scale(.96); }
+  .btn:hover { background: var(--surface); }
+  .btn-p { background: var(--purple); color: #fff; border-color: var(--purple-dark); }
+  .btn-p:hover { background: var(--purple-dark); }
+  .btn-sm { font-size: 13px; padding: 9px 8px; }
+
+  /* complete */
+  .fin { text-align: center; padding: 2rem 1rem 1rem; }
+  .fin-ico { font-size: 52px; margin-bottom: 1rem; }
+  .fin-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .fin-txt { font-size: 14px; color: var(--text-sub); line-height: 1.75; }
+  .fin-divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+  /* footer */
+  .footer {
+    padding: .6rem;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-hint);
+    border-top: 0.5px solid var(--border);
+    background: var(--card);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top-deco"></div>
+  <div class="header">
+    <div class="header-moon">🌙</div>
+    <div class="header-title">改善失眠穴位按摩</div>
+    <div class="header-sub">圖解引導 · 跟著步驟放鬆助眠</div>
+  </div>
+  <div class="content" id="mc"></div>
+  <div class="footer">本內容僅供保健參考，不替代專業醫療建議</div>
+</div>
+
+<script>
+const DUR = 60;
+const pts = [
+  {
+    name: "神門穴",
+    loc: "小指與無名指間往下延伸，與手腕橫紋交會處（尺側腕橫紋）",
+    tip: "拇指指腹輕按，感覺輕微酸麻即可，勿用力掐。",
+    bilateral: true,
+    svg: `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" width="190" height="152">
+      <rect x="55" y="95" width="90" height="45" rx="8" fill="#F5D0B5"/>
+      <rect x="55" y="40" width="90" height="62" rx="14" fill="#F5D0B5"/>
+      <rect x="62" y="10" width="16" height="38" rx="8" fill="#F5D0B5"/>
+      <rect x="82" y="5" width="16" height="42" rx="8" fill="#F5D0B5"/>
+      <rect x="102" y="5" width="16" height="42" rx="8" fill="#F5D0B5"/>
+      <rect x="122" y="10" width="16" height="38" rx="8" fill="#F5D0B5"/>
+      <ellipse cx="50" cy="65" rx="14" ry="22" fill="#F5D0B5" transform="rotate(-20 50 65)"/>
+      <line x1="55" y1="97" x2="145" y2="97" stroke="#D4956A" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="58" cy="102" r="8" fill="#7F77DD"/>
+      <circle cx="58" cy="102" r="4" fill="white"/>
+      <text x="72" y="120" font-size="13" fill="#3C3489" font-family="sans-serif" font-weight="600">神門穴</text>
+      <line x1="65" y1="105" x2="70" y2="114" stroke="#7F77DD" stroke-width="1.5"/>
+    </svg>`
+  },
+  {
+    name: "內關穴",
+    loc: "腕橫紋上三指寬，兩條筋膜間凹陷處（前臂內側中央）",
+    tip: "拇指按壓時搭配緩慢深呼吸，安神效果更好，也可改善心悸。",
+    bilateral: true,
+    svg: `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" width="190" height="152">
+      <rect x="70" y="10" width="60" height="130" rx="30" fill="#F5D0B5"/>
+      <line x1="72" y1="118" x2="128" y2="118" stroke="#D4956A" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="93" y1="50" x2="93" y2="116" stroke="#C4855A" stroke-width="1.2" opacity="0.45"/>
+      <line x1="107" y1="50" x2="107" y2="116" stroke="#C4855A" stroke-width="1.2" opacity="0.45"/>
+      <rect x="133" y="78" width="16" height="40" rx="4" fill="#EEEDFE"/>
+      <text x="135" y="91" font-size="9" fill="#534AB7" font-family="sans-serif">三</text>
+      <text x="135" y="103" font-size="9" fill="#534AB7" font-family="sans-serif">指</text>
+      <text x="135" y="115" font-size="9" fill="#534AB7" font-family="sans-serif">寬</text>
+      <line x1="133" y1="78" x2="129" y2="78" stroke="#7F77DD" stroke-width="1"/>
+      <line x1="133" y1="118" x2="129" y2="118" stroke="#7F77DD" stroke-width="1"/>
+      <circle cx="100" cy="80" r="9" fill="#7F77DD"/>
+      <circle cx="100" cy="80" r="4.5" fill="white"/>
+      <text x="114" y="55" font-size="13" fill="#3C3489" font-family="sans-serif" font-weight="600">內關穴</text>
+      <line x1="109" y1="78" x2="114" y2="61" stroke="#7F77DD" stroke-width="1.5"/>
+    </svg>`
+  },
+  {
+    name: "三陰交穴",
+    loc: "小腿內側，腳踝骨尖上四指寬，脛骨後緣凹陷處",
+    tip: "孕婦請避免按壓。一般人按摩可改善睡眠、水腫與婦科問題。",
+    bilateral: true,
+    svg: `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" width="190" height="152">
+      <rect x="75" y="5" width="50" height="110" rx="25" fill="#F5D0B5"/>
+      <ellipse cx="100" cy="128" rx="32" ry="18" fill="#F5D0B5"/>
+      <line x1="88" y1="10" x2="88" y2="115" stroke="#C4855A" stroke-width="1.5" opacity="0.38"/>
+      <circle cx="76" cy="128" r="7" fill="#E8B89A"/>
+      <rect x="133" y="80" width="16" height="44" rx="4" fill="#EEEDFE"/>
+      <text x="135" y="94" font-size="9" fill="#534AB7" font-family="sans-serif">四</text>
+      <text x="135" y="105" font-size="9" fill="#534AB7" font-family="sans-serif">指</text>
+      <text x="135" y="116" font-size="9" fill="#534AB7" font-family="sans-serif">寬</text>
+      <line x1="133" y1="80" x2="128" y2="80" stroke="#7F77DD" stroke-width="1"/>
+      <line x1="133" y1="124" x2="128" y2="124" stroke="#7F77DD" stroke-width="1"/>
+      <circle cx="84" cy="82" r="9" fill="#7F77DD"/>
+      <circle cx="84" cy="82" r="4.5" fill="white"/>
+      <text x="38" y="58" font-size="12" fill="#3C3489" font-family="sans-serif" font-weight="600">三陰交穴</text>
+      <line x1="72" y1="80" x2="66" y2="64" stroke="#7F77DD" stroke-width="1.5"/>
+    </svg>`
+  },
+  {
+    name: "湧泉穴",
+    loc: "足底第二與第三趾間往足跟方向，足底前1/3凹陷處",
+    tip: "睡前泡腳後按壓效果最佳，用拇指用力揉按，可搭配兩腳交替進行。",
+    bilateral: true,
+    svg: `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" width="190" height="152">
+      <ellipse cx="100" cy="92" rx="55" ry="68" fill="#F5D0B5"/>
+      <ellipse cx="64" cy="30" rx="10" ry="12" fill="#F5D0B5"/>
+      <ellipse cx="80" cy="24" rx="10" ry="13" fill="#F5D0B5"/>
+      <ellipse cx="100" cy="22" rx="10" ry="13" fill="#F5D0B5"/>
+      <ellipse cx="120" cy="24" rx="10" ry="13" fill="#F5D0B5"/>
+      <ellipse cx="136" cy="30" rx="9" ry="11" fill="#F5D0B5"/>
+      <ellipse cx="58" cy="108" rx="12" ry="28" fill="#E8B89A" opacity="0.55"/>
+      <line x1="48" y1="66" x2="152" y2="66" stroke="#D4956A" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="154" y="70" font-size="9" fill="#D4956A" font-family="sans-serif">1/3</text>
+      <circle cx="100" cy="66" r="10" fill="#7F77DD"/>
+      <circle cx="100" cy="66" r="5" fill="white"/>
+      <text x="113" y="50" font-size="13" fill="#3C3489" font-family="sans-serif" font-weight="600">湧泉穴</text>
+      <line x1="109" y1="62" x2="113" y2="54" stroke="#7F77DD" stroke-width="1.5"/>
+    </svg>`
+  }
+];
+
+let step = -1, side = 'left', tLeft = DUR, running = false, ticker = null;
+
+function fmt(s) {
+  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+}
+
+function renderIntro() {
+  document.getElementById('mc').innerHTML = `
+    <div class="intro-section">
+      <div class="method-card">
+        <div class="method-title">📋 按壓方法</div>
+        <div class="method-desc">每穴按壓 5 秒放鬆 1 秒；或按揉 10 圈後放鬆 2 秒，共計時 1 分鐘。</div>
+      </div>
+      <div class="method-card">
+        <div class="method-title">👐 力道要領</div>
+        <div class="method-desc">手法宜柔和、有力、均勻，由輕而重、由淺而深，以感覺輕微酸麻為宜。</div>
+      </div>
+    </div>
+    <div class="points-preview">
+      ${pts.map((p, i) => `<div class="preview-chip"><div class="preview-chip-num">穴位 ${i+1}</div><div class="preview-chip-name">${p.name}</div></div>`).join('')}
+    </div>
+    <div class="start-meta">共 4 個穴位 · 雙側每穴各 1 分鐘</div>
+    <button class="btn btn-p" onclick="step=0;renderStep()" style="width:100%;padding:14px;font-size:15px">開始按摩引導 →</button>
+  `;
+}
+
+function renderStep() {
+  if (step >= pts.length) { renderFin(); return; }
+  clearInterval(ticker);
+  const pt = pts[step];
+  tLeft = DUR; running = false;
+  if (pt.bilateral) side = 'left';
+
+  document.getElementById('mc').innerHTML = `
+    <div class="prog-wrap">
+      <div class="prog-row">
+        <span class="prog-label">整體進度</span>
+        <span class="prog-step">${step + 1} / ${pts.length}</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${step / pts.length * 100}%"></div></div>
+    </div>
+    <div class="dots">${pts.map((_, i) => `<div class="dot ${i === step ? 'on' : ''}"></div>`).join('')}</div>
+
+    <div class="pt-card">
+      <div class="pt-badge">✦ 穴位 ${step + 1}</div>
+      <div class="pt-name">${pt.name}</div>
+      ${pt.bilateral ? `<div class="sides-toggle">
+        <button class="side-btn ${side === 'left' ? 'on' : ''}" id="sl" onclick="swSide('left')">👈 左側</button>
+        <button class="side-btn ${side === 'right' ? 'on' : ''}" id="sr" onclick="swSide('right')">右側 👉</button>
+      </div>` : ''}
+      <div class="illus-box">${pt.svg}</div>
+      <div class="pt-loc">📍 ${pt.loc}</div>
+      <div class="tip-lbl">💡 按摩提示</div>
+      <div class="tip-txt">${pt.tip}</div>
+    </div>
+
+    <div class="timer-section">
+      <div class="timer-ring">
+        <svg class="t-svg" width="110" height="110" viewBox="0 0 110 110">
+          <circle class="t-bg" cx="55" cy="55" r="44"/>
+          <circle class="t-arc" cx="55" cy="55" r="44" id="arc" stroke-dashoffset="0"/>
+        </svg>
+        <div class="t-num" id="tdisp">${fmt(DUR)}</div>
+      </div>
+      <div class="t-stat" id="tstat">${pt.bilateral ? '按左側 1 分鐘' : '按摩 1 分鐘'}</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-sm" onclick="resetT()" style="flex:0.55">↺ 重置</button>
+      <button class="btn btn-p btn-sm" id="startbtn" onclick="toggleT()">▶ 開始計時</button>
+    </div>
+    <div class="btn-row" style="margin-top:0">
+      ${step > 0 ? `<button class="btn btn-sm" onclick="step--;renderStep()">← 上一穴</button>` : ''}
+      <button class="btn btn-sm" onclick="step++;renderStep()" style="color:var(--text-hint)">跳過 →</button>
+    </div>
+  `;
+}
+
+function swSide(s) {
+  side = s; tLeft = DUR; running = false; clearInterval(ticker);
+  const sl = document.getElementById('sl'), sr = document.getElementById('sr');
+  if (sl) sl.className = 'side-btn' + (s === 'left' ? ' on' : '');
+  if (sr) sr.className = 'side-btn' + (s === 'right' ? ' on' : '');
+  const d = document.getElementById('tdisp'), a = document.getElementById('arc');
+  const b = document.getElementById('startbtn'), t = document.getElementById('tstat');
+  if (d) d.textContent = fmt(DUR);
+  if (a) a.style.strokeDashoffset = '0';
+  if (b) { b.textContent = '▶ 開始計時'; b.onclick = toggleT; }
+  if (t) t.textContent = `按${s === 'left' ? '左' : '右'}側 1 分鐘`;
+}
+
+function toggleT() {
+  if (running) {
+    clearInterval(ticker); running = false;
+    const b = document.getElementById('startbtn');
+    if (b) b.textContent = '▶ 繼續計時';
+  } else {
+    running = true;
+    const b = document.getElementById('startbtn');
+    if (b) b.textContent = '⏸ 暫停';
+    ticker = setInterval(() => {
+      tLeft--;
+      const a = document.getElementById('arc'), d = document.getElementById('tdisp');
+      const t = document.getElementById('tstat'), b = document.getElementById('startbtn');
+      if (!a) { clearInterval(ticker); return; }
+      a.style.strokeDashoffset = (1 - tLeft / DUR) * 276;
+      if (d) d.textContent = fmt(tLeft);
+      if (tLeft <= 0) {
+        clearInterval(ticker); running = false;
+        const pt = pts[step];
+        if (pt.bilateral && side === 'left') {
+          if (t) t.textContent = '✅ 左側完成！請換右側';
+          setTimeout(() => swSide('right'), 900);
+        } else {
+          if (t) t.textContent = '✅ 完成！';
+          if (b) { b.textContent = '下一個穴位 →'; b.onclick = () => { step++; renderStep(); }; }
+        }
+      }
+    }, 1000);
+  }
+}
+
+function resetT() {
+  clearInterval(ticker); running = false; tLeft = DUR;
+  const a = document.getElementById('arc'), d = document.getElementById('tdisp'), b = document.getElementById('startbtn');
+  if (a) a.style.strokeDashoffset = '0';
+  if (d) d.textContent = fmt(DUR);
+  if (b) { b.textContent = '▶ 開始計時'; b.onclick = toggleT; }
+}
+
+function renderFin() {
+  clearInterval(ticker);
+  document.getElementById('mc').innerHTML = `
+    <div class="prog-bar" style="margin-bottom:.5rem"><div class="prog-fill" style="width:100%"></div></div>
+    <div class="fin">
+      <div class="fin-ico">🌙</div>
+      <div class="fin-title">按摩完成！</div>
+      <div class="fin-txt">恭喜完成全部四個穴位按摩。<br>建議搭配緩慢腹式呼吸，<br>讓身體慢慢放鬆進入睡眠狀態。<br><br>祝您一夜好眠 ✨</div>
+      <div class="fin-divider"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn" onclick="step=0;renderStep()">再做一次</button>
+      <button class="btn btn-p" onclick="step=-1;renderIntro()">返回首頁</button>
+    </div>
+  `;
+}
+
+renderIntro();
+</script>
+</body>
+</html>
